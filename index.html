@@ -3,73 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="tab-title">Encrypto v1.8.5 | ALPHA</title>
+<title id="tab-title">Encrypto v1.8.5 | MASTER_ALPHA</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-    /* BASE VARIABLES */
+    /* GLOBAL CSS VARIABLES */
     :root { 
-        --bg: #000; --text: #00ff41; --accent: #00ff41; --panel: #050f05; 
-        --font: 'JetBrains Mono', monospace; --radius: 0px; --kb-gap: 2px;
+        --bg: #121212; --text: #cccccc; --accent: #888888; --panel: #1e1e1e; 
+        --font: 'Courier New', monospace; --radius: 4px; --kb-gap: 2px; --warn: #ffcc00;
     }
 
     body { 
         background: var(--bg); color: var(--text); font-family: var(--font); 
         margin: 0; padding: 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-        padding-bottom: 300px; user-select: none;
+        padding-bottom: 300px; user-select: none; overflow-x: hidden;
     }
 
-    /* THEME 1: HACKER (Terminal Look - Default) */
+    /* THEME 1: HACKER (Terminal Look) */
     body.theme-hacker {
         --bg: #020a02; --text: #00ff41; --accent: #00ff41; --panel: #020a02; 
-        --font: 'JetBrains Mono', monospace; --radius: 0px; --kb-gap: 2px;
+        --font: 'JetBrains Mono', monospace; --radius: 0px; --kb-gap: 2px; --warn: #ff0000;
     }
     body.theme-hacker .container { border: 1px solid var(--accent); box-shadow: none; }
-    body.theme-hacker input, body.theme-hacker textarea { border: 1px solid #005500; background: #000; }
-    body.theme-hacker #ui-main { display: flex; flex-direction: column; } /* Standard Order */
+    body.theme-hacker input, body.theme-hacker textarea, body.theme-hacker select { border: 1px solid #005500; background: #000; }
+    body.theme-hacker #ui-main { display: flex; flex-direction: column; }
 
-    /* THEME 2: MODERN (Glassmorphism & Curves) */
+    /* THEME 2: MODERN (Glassmorphism) */
     body.theme-modern {
-        --bg: #0f172a; --text: #f8fafc; --accent: #38bdf8; --panel: rgba(30, 41, 59, 0.7); 
-        --font: 'Orbitron', sans-serif; --radius: 16px; --kb-gap: 8px;
+        --bg: #050505; --text: #ffffff; --accent: #ff0044; --panel: rgba(20, 20, 20, 0.8); 
+        --font: 'Orbitron', sans-serif; --radius: 12px; --kb-gap: 6px; --warn: #ff3366;
     }
-    body.theme-modern .container { border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(15px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-    body.theme-modern input, body.theme-modern textarea { border: none; border-bottom: 2px solid var(--accent); background: rgba(0,0,0,0.4); border-radius: 8px 8px 0 0; }
-    body.theme-modern button { border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
+    body.theme-modern .container { border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(20px); box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+    body.theme-modern input, body.theme-modern textarea, body.theme-modern select { border: none; border-bottom: 2px solid var(--accent); background: rgba(0,0,0,0.5); border-radius: 8px 8px 0 0; }
     body.theme-modern #ui-main { display: flex; flex-direction: column; }
-    body.theme-modern #action-btns { order: -1; margin-bottom: 15px; } /* Moves action buttons to the TOP */
+    body.theme-modern #action-btns { order: -1; margin-bottom: 15px; } /* Shifts Buttons Up */
 
     /* THEME 3: LITE (Clean App Look) */
     body.theme-lite {
-        --bg: #f0f4f8; --text: #1a202c; --accent: #2b6cb0; --panel: #ffffff; 
-        --font: 'Inter', sans-serif; --radius: 8px; --kb-gap: 4px;
+        --bg: #f8fafc; --text: #0f172a; --accent: #2563eb; --panel: #ffffff; 
+        --font: 'Inter', sans-serif; --radius: 8px; --kb-gap: 4px; --warn: #d97706;
     }
-    body.theme-lite .container { border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1); }
-    body.theme-lite input, body.theme-lite textarea { border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; }
-    body.theme-lite button { background: var(--accent); color: #fff; box-shadow: 0 2px 4px rgba(43,108,176,0.3); }
+    body.theme-lite .container { border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+    body.theme-lite input, body.theme-lite textarea, body.theme-lite select { border: 1px solid #cbd5e1; background: #f1f5f9; color: #0f172a; }
+    body.theme-lite button { background: var(--accent); color: #fff; box-shadow: 0 4px 6px rgba(37,99,235,0.2); }
     body.theme-lite #ui-main { display: flex; flex-direction: column; }
-    body.theme-lite #pass-container { order: -2; } /* Moves Password to the VERY TOP */
-    body.theme-lite .header { border-bottom: 2px solid #e2e8f0; }
+    body.theme-lite #pass-container { order: -2; } /* Shifts Password Box to Top */
 
-    /* SHARED STRUCTURAL CSS */
-    .container { max-width: 550px; margin: auto; padding: 25px; background: var(--panel); border-radius: var(--radius); transition: all 0.4s ease; }
-    .header { text-align: center; padding-bottom: 10px; margin-bottom: 15px; transition: all 0.4s ease; }
-    h1 { font-size: 1.3rem; letter-spacing: 1px; margin: 0; }
-    .credit { font-size: 0.6rem; color: #888; font-family: 'JetBrains Mono', monospace; margin-top: 5px; }
+    /* STRUCTURAL CLASSES */
+    .container { max-width: 550px; margin: auto; padding: 20px; background: var(--panel); border-radius: var(--radius); transition: all 0.4s ease; }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent); padding-bottom: 10px; margin-bottom: 15px; }
+    h1 { font-size: 1.1rem; letter-spacing: 1px; margin: 0; }
 
-    textarea, input, select { width: 100%; color: var(--text); padding: 14px; margin: 6px 0; font-family: var(--font); font-size: 0.9rem; box-sizing: border-box; transition: all 0.3s ease; border-radius: var(--radius); }
-    textarea:focus, input:focus { outline: none; border-color: var(--accent); filter: brightness(1.2); }
+    textarea, input, select { width: 100%; color: var(--text); padding: 12px; margin: 6px 0; font-family: var(--font); font-size: 0.85rem; box-sizing: border-box; transition: all 0.3s ease; border-radius: var(--radius); background: rgba(0,0,0,0.3); border: 1px solid #444; }
+    textarea:focus, input:focus { outline: none; border-color: var(--accent); }
 
-    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
-    button { background: var(--accent); color: var(--bg); border: none; padding: 15px; cursor: pointer; font-weight: bold; font-family: var(--font); border-radius: var(--radius); transition: all 0.2s ease; }
-    button:hover { transform: scale(0.98); opacity: 0.9; }
+    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+    button { background: var(--accent); color: var(--bg); border: none; padding: 14px; cursor: pointer; font-weight: bold; font-family: var(--font); border-radius: var(--radius); transition: 0.2s; }
+    button:hover { transform: scale(0.98); filter: brightness(1.2); }
 
-    /* SHAPE-SHIFTING KEYBOARD */
-    #kb-tray { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--panel); border-top: 2px solid var(--accent); padding: 12px 0; z-index: 9999; transition: all 0.4s ease; }
-    #v-kb { display: grid; grid-template-columns: repeat(10, 1fr); gap: var(--kb-gap); max-width: 600px; margin: auto; padding: 0 10px; transition: gap 0.4s ease; }
-    .key { background: rgba(128,128,128,0.2); padding: 16px 0; text-align: center; cursor: pointer; font-size: 0.85rem; border-radius: var(--radius); color: var(--text); font-family: var(--font); transition: all 0.2s ease; border: 1px solid rgba(128,128,128,0.1); }
+    .chain-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; }
+    .chain-grid select { font-size: 0.65rem; padding: 8px 2px; text-align: center; }
+
+    #warn-box { border: 1px dashed var(--warn); color: var(--warn); padding: 10px; margin: 8px 0; font-size: 0.7rem; background: rgba(0,0,0,0.4); text-align: justify; line-height: 1.4; }
+
+    /* FLOATING HAPTIC KEYBOARD */
+    #kb-tray { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--panel); border-top: 2px solid var(--accent); padding: 10px 0; z-index: 9999; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
+    #v-kb { display: grid; grid-template-columns: repeat(10, 1fr); gap: var(--kb-gap); max-width: 600px; margin: auto; padding: 0 8px; transition: gap 0.4s ease; }
+    .key { background: rgba(128,128,128,0.15); padding: 14px 0; text-align: center; cursor: pointer; font-size: 0.8rem; border-radius: var(--radius); color: var(--text); font-family: var(--font); border: 1px solid rgba(128,128,128,0.1); }
     .key:active { background: var(--accent); color: var(--bg); transform: scale(0.95); }
-    .key.wide { grid-column: span 2; font-weight: bold; background: rgba(128,128,128,0.3); }
-
+    .key.wide { grid-column: span 2; font-weight: bold; }
     .hidden { display: none !important; }
 </style>
 </head>
@@ -79,55 +80,76 @@
     <div class="container">
         <div class="header">
             <h1>ENCRYPTO v1.8.5</h1>
-            <div class="credit">CORE: OMKAR DAS | UI/SEC: NAYAN CHANDRA</div>
+            <span style="font-size:0.6rem; color:var(--accent);">MASTER_ALPHA</span>
         </div>
         
-        <select id="themeEng" onchange="setTheme(this.value)">
-            <option value="hacker">THEME: HACKER_TERMINAL</option>
-            <option value="modern">THEME: MODERN_GLOW</option>
-            <option value="lite">THEME: LITE_MINIMAL</option>
-        </select>
-
         <div id="ui-main">
-            <div id="cipher-box" class="btn-group">
-                <select id="layer1" onchange="checkCustom()">
-                    <option value="aes">CIPHER: AES-256</option>
-                    <option value="rc4">CIPHER: RC4</option>
-                    <option value="custom">CIPHER: CUSTOM ROT</option>
+            <div class="btn-group">
+                <select id="themeEng" onchange="setTheme(this.value)">
+                    <option value="hacker">UI: HACKER_TERM</option>
+                    <option value="modern">UI: MODERN_GLOW</option>
+                    <option value="lite">UI: LITE_FAST</option>
+                    <option value="system">UI: SYSTEM_DEF</option>
                 </select>
-                <input type="number" id="customShift" class="hidden" placeholder="ROT#" min="1" max="25">
+                <select id="wrapperMode">
+                    <option value="raw">MODE: RAW_BLOB</option>
+                    <option value="ghost">MODE: GHOST_STEGANO</option>
+                </select>
             </div>
+
+            <div class="chain-grid">
+                <select id="layer1" onchange="checkSystem()">
+                    <option value="aes">L1: AES-256</option>
+                    <option value="rc4">L1: RC4</option>
+                    <option value="rabbit">L1: RABBIT</option>
+                    <option value="custom">L1: CUSTOM</option>
+                </select>
+                <select id="layer2" onchange="checkSystem()">
+                    <option value="none">L2: NONE</option>
+                    <option value="aes">L2: AES-256</option>
+                    <option value="rc4">L2: RC4</option>
+                    <option value="rabbit">L2: RABBIT</option>
+                    <option value="custom">L2: CUSTOM</option>
+                </select>
+                <select id="layer3" onchange="checkSystem()">
+                    <option value="none">L3: NONE</option>
+                    <option value="aes">L3: AES-256</option>
+                    <option value="rc4">L3: RC4</option>
+                    <option value="rabbit">L3: RABBIT</option>
+                    <option value="custom">L3: CUSTOM</option>
+                </select>
+            </div>
+
+            <input type="number" id="customShift" class="hidden" placeholder="[CUSTOM ROT SHIFT: 1-25]">
+            <div id="warn-box" class="hidden"></div>
 
             <div id="input-container">
-                <textarea id="itx" placeholder="[INPUT_MESSAGE_DATA]" onfocus="curF='itx'"></textarea>
+                <textarea id="itx" placeholder="[INPUT_DATA]" onfocus="curF='itx'"></textarea>
             </div>
-
             <div id="pass-container">
                 <input type="password" id="kix" placeholder="[MASTER_PASSPHRASE]" onfocus="curF='kix'">
             </div>
             
             <div id="action-btns" class="btn-group">
-                <button onclick="execute('enc')">ENCRYPT_DATA</button>
-                <button onclick="execute('dec')">DECRYPT_DATA</button>
+                <button onclick="execute('enc')">LOCK (ENCRYPT)</button>
+                <button onclick="execute('dec')">UNLOCK (DECRYPT)</button>
             </div>
 
             <div id="output-container">
-                <textarea id="otx" placeholder="[ENCRYPTED_VAULT_OUTPUT]" readonly></textarea>
+                <textarea id="otx" placeholder="[VAULT_OUTPUT]" readonly></textarea>
             </div>
             
             <div id="util-btns" class="btn-group">
-                <button onclick="copyOut()">COPY_TO_CLIPBOARD</button>
+                <button onclick="copyOut()" style="background:var(--text); color:var(--bg);">COPY_DATA</button>
                 <button onclick="chameleon()">CHAMELEON_TAB</button>
             </div>
             
-            <button onclick="kill()" style="width:100%; margin-top:10px; background:#e53e3e; color:white;">EMERGENCY_PURGE</button>
+            <button onclick="kill()" style="width:100%; margin-top:5px; background:#8b0000; color:white;">EMERGENCY_PURGE</button>
         </div>
     </div>
 </div>
 
-<div id="kb-tray">
-    <div id="v-kb"></div>
-</div>
+<div id="kb-tray"><div id="v-kb"></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
@@ -137,15 +159,15 @@
     const kix = document.getElementById('kix');
     const otx = document.getElementById('otx');
     const shiftIn = document.getElementById('customShift');
+    const warnBox = document.getElementById('warn-box');
 
-    // Haptics tuned for Android
+    // HAPTICS & THEMES
     function hap(ms) { if (navigator.vibrate) navigator.vibrate(ms); }
     
-    // Theme Switcher & Renderer
     function setTheme(v) { 
-        document.body.className = 'theme-' + v; 
+        document.body.className = v === 'system' ? '' : 'theme-' + v; 
         hap(30); 
-        setTimeout(renderKB, 100); // Re-render keyboard to apply shape logic
+        setTimeout(renderKB, 100); 
     }
     
     function chameleon() {
@@ -154,57 +176,61 @@
         hap([30,50,30]);
     }
 
-    function checkCustom() {
-        if(document.getElementById('layer1').value === 'custom') {
+    // DYNAMIC WARNING LOGIC
+    function checkSystem() {
+        const l1 = document.getElementById('layer1').value;
+        const l2 = document.getElementById('layer2').value;
+        const l3 = document.getElementById('layer3').value;
+        let warnings = [];
+        
+        if (l1 === 'custom' || l2 === 'custom' || l3 === 'custom') {
             shiftIn.classList.remove('hidden');
+            warnings.push("[!] CRITICAL: You have engaged a CUSTOM cipher layer. You MUST remember your exact ROT Shift Number. If forgotten, data is mathematically unrecoverable.");
         } else {
             shiftIn.classList.add('hidden');
         }
+
+        let layerCount = (l1 !== 'none' ? 1 : 0) + (l2 !== 'none' ? 1 : 0) + (l3 !== 'none' ? 1 : 0);
+        if (layerCount > 1) {
+            warnings.push(`[i] MULTI-CHAIN ACTIVE: Data will pass through ${layerCount} layers. Ensure you decrypt in the exact same layer configuration.`);
+        }
+
+        if (warnings.length > 0) {
+            warnBox.innerHTML = warnings.join("<br><br>"); warnBox.classList.remove('hidden');
+        } else {
+            warnBox.classList.add('hidden');
+        }
     }
 
-    // DYNAMIC KEYBOARD
+    // VIRTUAL KEYBOARD ENGINE
     function renderKB() {
         const kb = document.getElementById('v-kb');
         kb.innerHTML = '';
-        
         const letters = "QWERTYUIOPASDFGHJKLZXCVBNM".split("");
         const numbers = "1234567890!@#$%^&*()".split("");
         const frag = document.createDocumentFragment();
 
         letters.forEach(l => {
             let keyChar = isCaps ? l : l.toLowerCase();
-            let d = document.createElement('div');
-            d.className = 'key'; d.innerText = keyChar;
-            d.onclick = () => { document.getElementById(curF).value += keyChar; hap(10); };
-            frag.appendChild(d);
+            let d = document.createElement('div'); d.className = 'key'; d.innerText = keyChar;
+            d.onclick = () => { document.getElementById(curF).value += keyChar; hap(10); }; frag.appendChild(d);
         });
 
         numbers.forEach(n => {
-            let d = document.createElement('div');
-            d.className = 'key'; d.innerText = n;
-            d.onclick = () => { document.getElementById(curF).value += n; hap(10); };
-            frag.appendChild(d);
+            let d = document.createElement('div'); d.className = 'key'; d.innerText = n;
+            d.onclick = () => { document.getElementById(curF).value += n; hap(10); }; frag.appendChild(d);
         });
 
-        let shift = document.createElement('div');
-        shift.className = 'key wide';
-        shift.innerText = isCaps ? "TO_LOWER" : "TO_UPPER";
-        shift.onclick = () => { isCaps = !isCaps; renderKB(); hap(25); };
-        frag.appendChild(shift);
+        let shiftBtn = document.createElement('div'); shiftBtn.className = 'key wide'; shiftBtn.innerText = isCaps ? "TO_LOWER" : "TO_UPPER";
+        shiftBtn.onclick = () => { isCaps = !isCaps; renderKB(); hap(25); }; frag.appendChild(shiftBtn);
 
-        let bk = document.createElement('div');
-        bk.className = 'key wide'; bk.innerText = "BACKSPACE";
-        bk.onclick = () => { 
-            let f = document.getElementById(curF);
-            f.value = f.value.slice(0, -1);
-            hap(15);
-        };
-        frag.appendChild(bk);
+        let bk = document.createElement('div'); bk.className = 'key wide'; bk.innerText = "BACKSPACE";
+        bk.onclick = () => { let f = document.getElementById(curF); f.value = f.value.slice(0, -1); hap(15); }; frag.appendChild(bk);
 
         kb.appendChild(frag);
     }
 
-    // CIPHER LOGIC
+    // MATH & CRYPTOGRAPHY ENGINES
     function customRot(str, amount) {
         if (amount < 0) amount = 26 + amount;
         return str.replace(/[a-zA-Z]/g, function(c) {
@@ -213,46 +239,105 @@
         });
     }
 
-    function execute(mode) {
-        const key = kix.value;
-        let data = itx.value;
-        const type = document.getElementById('layer1').value;
-        const shift = parseInt(shiftIn.value) || 13;
+    function scramble(str) {
+        // Atbash Memory Scrambler
+        return str.replace(/[a-zA-Z]/g, c => String.fromCharCode((c <= 'Z' ? 90 : 122) - (c.charCodeAt(0) - (c <= 'Z' ? 65 : 97))));
+    }
 
-        if (!key || !data) return alert("ERR: INPUTS OR PASSPHRASE EMPTY");
+    // 10-n REVERSE SALT ENGINE
+    function applySalt(text) {
+        const rLen = Math.floor(Math.random() * 9) + 1;
+        const prefix = CryptoJS.lib.WordArray.random(rLen).toString();
+        const suffix = CryptoJS.lib.WordArray.random(rLen).toString();
+        const hiddenKey = (10 - rLen).toString(); 
+        return hiddenKey + prefix + text + suffix;
+    }
 
-        try {
-            if (mode === 'enc') {
-                if(type === 'aes') data = CryptoJS.AES.encrypt(data, key).toString();
-                if(type === 'rc4') data = CryptoJS.RC4.encrypt(data, key).toString();
-                if(type === 'custom') {
-                    let rotated = customRot(data, shift);
-                    data = CryptoJS.AES.encrypt(rotated, key).toString();
-                }
-                otx.value = data;
-            } else {
-                if(type === 'aes') data = CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
-                if(type === 'rc4') data = CryptoJS.RC4.decrypt(data, key).toString(CryptoJS.enc.Utf8);
-                if(type === 'custom') {
-                    let decrypted = CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
-                    if(!decrypted) throw new Error();
-                    data = customRot(decrypted, -shift);
-                }
-                if(!data) throw new Error();
-                otx.value = data;
+    function stripSalt(text) {
+        const hiddenKey = parseInt(text.substring(0,1));
+        const rLen = 10 - hiddenKey;
+        const hexLen = rLen * 2; // WordArray converts to Hex (2 chars per byte)
+        return text.substring(1 + hexLen, text.length - hexLen);
+    }
+
+    function processLayer(data, key, mode, action) {
+        if (mode === 'none') return data;
+        
+        if (action === 'enc') {
+            if(mode === 'aes') return CryptoJS.AES.encrypt(data, key).toString();
+            if(mode === 'rc4') return CryptoJS.RC4.encrypt(data, key).toString();
+            if(mode === 'rabbit') return CryptoJS.Rabbit.encrypt(data, key).toString();
+            if(mode === 'custom') {
+                let shift = parseInt(shiftIn.value) || 13;
+                return CryptoJS.AES.encrypt(customRot(data, shift), key).toString();
             }
-            hap([50,50,50]);
-        } catch(e) { 
-            otx.value = "ERROR: DECRYPTION FAILED";
-            alert("AUTH_FAIL: WRONG KEY OR DATA CORRUPTED"); 
-            hap([150,50,150]); 
+        } else {
+            if(mode === 'aes') return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
+            if(mode === 'rc4') return CryptoJS.RC4.decrypt(data, key).toString(CryptoJS.enc.Utf8);
+            if(mode === 'rabbit') return CryptoJS.Rabbit.decrypt(data, key).toString(CryptoJS.enc.Utf8);
+            if(mode === 'custom') {
+                let shift = parseInt(shiftIn.value) || 13;
+                let raw = CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
+                return customRot(raw, -shift);
+            }
         }
     }
 
-    function copyOut() { navigator.clipboard.writeText(otx.value); alert("COPIED TO CLIPBOARD"); hap(30); }
+    // THE MASTER EXECUTION LOGIC
+    function execute(action) {
+        const key = kix.value;
+        let data = itx.value;
+        const l1 = document.getElementById('layer1').value;
+        const l2 = document.getElementById('layer2').value;
+        const l3 = document.getElementById('layer3').value;
+        const wrapper = document.getElementById('wrapperMode').value;
+
+        if (!data || !key) { hap([100,50,100]); return alert("ERR: DATA AND PASSPHRASE REQUIRED."); }
+
+        try {
+            if (action === 'enc') {
+                // 1. Math Salt -> 2. Atbash Scramble -> 3. L1 -> 4. L2 -> 5. L3
+                data = applySalt(data);
+                data = scramble(data);
+                data = processLayer(data, key, l1, 'enc');
+                data = processLayer(data, key, l2, 'enc');
+                data = processLayer(data, key, l3, 'enc');
+                
+                // 6. Steganography Wrapper
+                if(wrapper === 'ghost') {
+                    data = "Log entry registered at system time. Output signature is " + btoa(data).substring(0,8) + " payload verified: " + data;
+                }
+                
+                otx.value = data; hap([50,50,50]);
+            } else {
+                // 1. Strip Steganography
+                if(wrapper === 'ghost') {
+                    if(!data.includes("payload verified: ")) throw new Error();
+                    data = data.split("payload verified: ")[1];
+                }
+                
+                // 2. Reverse L3 -> 3. Reverse L2 -> 4. Reverse L1
+                data = processLayer(data, key, l3, 'dec'); if (!data && l3 !== 'none') throw new Error();
+                data = processLayer(data, key, l2, 'dec'); if (!data && l2 !== 'none') throw new Error();
+                data = processLayer(data, key, l1, 'dec'); if (!data) throw new Error();
+                
+                // 5. Reverse Atbash Scramble -> 6. Strip Math Salt
+                data = scramble(data); 
+                data = stripSalt(data);
+                
+                otx.value = data; hap([50,50,50]);
+            }
+        } catch(e) { 
+            hap([150,50,150,50,150]); 
+            otx.value = "FATAL_ERROR: CORRUPTED_DATA_OR_WRONG_KEY";
+            alert("FATAL_FAULT: DECRYPTION FAILED. Verify your keys, shift numbers, and layer order."); 
+        }
+    }
+
+    function copyOut() { navigator.clipboard.writeText(otx.value); hap(40); alert("VAULT_COPIED"); }
     function kill() { hap([200,100,200]); window.location.replace("about:blank"); }
     
-    window.onload = renderKB;
+    window.onload = () => { renderKB(); checkSystem(); };
     window.onblur = () => { if(itx.value || kix.value) kill(); };
 </script>
 </body>
