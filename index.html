@@ -4,169 +4,194 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="tab-title">Encrypto v1.8.5 | ALPHA</title>
-<link id="tab-icon" rel="icon" href="data:;base64,iVBORw0KGgo=">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-    :root { --bg: #121212; --text: #ffffff; --accent: #ff3333; --panel: #1e1e1e; --border: #333; --warn: #ffcc00; }
-    body.theme-hacker { --bg: #020a02; --text: #00ff41; --accent: #00ff41; --panel: #050f05; --border: #00ff41; --warn: #ff0000; }
-    body.theme-modern { --bg: #0f172a; --text: #e2e8f0; --accent: #38bdf8; --panel: rgba(255,255,255,0.05); --border: rgba(255,255,255,0.1); --warn: #fbbf24; }
-    body.theme-lite { --bg: #f8fafc; --text: #0f172a; --accent: #2563eb; --panel: #ffffff; --border: #cbd5e1; --warn: #eab308; }
-
-    body { background: var(--bg); color: var(--text); font-family: 'Courier New', monospace; margin: 0; padding: 20px; text-transform: uppercase; transition: all 0.4s ease; padding-bottom: 250px; overflow-x: hidden; user-select: none; }
-    .container { max-width: 550px; margin: auto; border: 1px solid var(--border); padding: 20px; background: var(--panel); backdrop-filter: blur(12px); border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    :root { --bg: #0f172a; --text: #f8fafc; --accent: #38bdf8; --panel: rgba(30, 41, 59, 0.7); --font: 'Inter', sans-serif; }
     
-    textarea, input, select { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: var(--text); padding: 12px; margin: 6px 0; box-sizing: border-box; font-family: inherit; }
-    textarea:focus, input:focus { outline: none; border-color: var(--accent); }
+    body.theme-hacker { 
+        --bg: #020a02; --text: #00ff41; --accent: #00ff41; --panel: #050f05; 
+        --font: 'JetBrains Mono', monospace; 
+    }
+    body.theme-modern { 
+        --bg: #000; --text: #fff; --accent: #ff0000; --panel: #111; 
+        --font: 'Orbitron', sans-serif; 
+    }
+    body.theme-lite { 
+        --bg: #ffffff; --text: #1a202c; --accent: #2b6cb0; --panel: #f7fafc; 
+        --font: 'Inter', sans-serif; 
+    }
 
-    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-    button { background: var(--text); color: var(--bg); border: none; padding: 14px; cursor: pointer; font-weight: bold; font-family: inherit; border-radius: 2px; }
-    button:hover { filter: brightness(1.2); }
+    body { 
+        background: var(--bg); color: var(--text); font-family: var(--font); 
+        margin: 0; padding: 20px; transition: all 0.3s ease; 
+        padding-bottom: 280px; user-select: none;
+    }
 
-    /* DYNAMIC WARNING BOX */
-    #warn-box { border: 1px dashed var(--warn); color: var(--warn); padding: 12px; margin: 10px 0; font-size: 0.75rem; background: rgba(0,0,0,0.4); text-align: justify; }
+    .container { 
+        max-width: 550px; margin: auto; border: 1px solid var(--accent); padding: 20px; 
+        background: var(--panel); backdrop-filter: blur(10px); border-radius: 8px;
+    }
+    
+    .header { text-align: center; border-bottom: 1px solid var(--accent); padding-bottom: 10px; margin-bottom: 15px; }
+    h1 { font-size: 1.2rem; letter-spacing: 2px; margin: 0; }
+    .credit { font-size: 0.6rem; color: #888; font-family: 'JetBrains Mono', monospace; }
 
-    /* MULTI-CHAIN GRID */
-    .chain-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin: 10px 0; }
-    .chain-grid select { font-size: 0.65rem; padding: 10px 5px; }
+    textarea, input, select { 
+        width: 100%; background: rgba(0,0,0,0.4); border: 1px solid #444; 
+        color: var(--text); padding: 12px; margin: 6px 0; border-radius: 4px; 
+        font-family: var(--font); font-size: 0.85rem; box-sizing: border-box;
+    }
+    textarea:focus, input:focus { border-color: var(--accent); outline: none; }
 
-    #kb-tray { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg); border-top: 2px solid var(--accent); z-index: 1000; padding: 12px 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
-    #v-kb { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; max-width: 650px; margin: auto; padding: 0 8px; }
-    .key { background: var(--panel); padding: 14px 0; text-align: center; cursor: pointer; font-size: 0.8rem; border: 1px solid var(--border); color: var(--text); }
-    .key:active { background: var(--accent); color: var(--bg); }
-    .key.wide { grid-column: span 2; font-weight: bold; }
+    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    button { 
+        background: var(--accent); color: #000; border: none; padding: 14px; 
+        cursor: pointer; font-weight: bold; font-family: var(--font); border-radius: 4px;
+    }
+    button:hover { opacity: 0.8; }
+
+    /* VIRTUAL KEYBOARD */
+    #kb-tray { 
+        position: fixed; bottom: 0; left: 0; width: 100%; background: #000; 
+        border-top: 2px solid var(--accent); padding: 10px 0; z-index: 9999;
+    }
+    #v-kb { 
+        display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; 
+        max-width: 600px; margin: auto; padding: 0 10px;
+    }
+    .key { 
+        background: #222; padding: 14px 0; text-align: center; cursor: pointer; 
+        font-size: 0.85rem; border-radius: 4px; color: #fff; border: 1px solid #333;
+    }
+    .key:active { background: var(--accent); color: #000; }
+    .key.wide { grid-column: span 2; background: #333; font-weight: bold; }
+    .key.active-caps { background: var(--accent); color: #000; }
 
     .hidden { display: none !important; }
-    .header-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 10px; }
-    .header-bar h1 { margin: 0; font-size: 1.1rem; }
 </style>
 </head>
 <body oncontextmenu="return false;" class="theme-hacker">
 
 <div id="boot-gate">
     <div class="container">
-        <div class="header-bar">
-            <h1 id="brand">ENCRYPTO_v1.8.5</h1>
-            <span style="font-size: 0.7rem; color: var(--accent);">FORTRESS_ALPHA</span>
+        <div class="header">
+            <h1>ENCRYPTO v1.8.5</h1>
+            <div class="credit">ORIGINAL CORE BY: OMKAR DAS | HARDENED BY: NAYAN</div>
         </div>
         
-        <div id="ui-main">
-            <select id="themeEng" onchange="setTheme(this.value)" style="margin-bottom:10px;">
-                <option value="hacker">THEME: HACKER_TERM</option>
-                <option value="modern">THEME: MODERN_GLASS</option>
-                <option value="lite">THEME: LITE_FAST</option>
+        <select id="themeEng" onchange="setTheme(this.value)">
+            <option value="hacker">THEME: HACKER_TERMINAL (MONO)</option>
+            <option value="modern">THEME: MODERN_GLOW (ORBITRON)</option>
+            <option value="lite">THEME: LITE_MINIMAL (INTER)</option>
+        </select>
+
+        <div class="btn-group">
+            <select id="layer1" onchange="checkCustom()">
+                <option value="aes">CIPHER: AES-256</option>
+                <option value="rc4">CIPHER: RC4</option>
+                <option value="custom">CIPHER: CUSTOM ROT</option>
             </select>
-
-            <div style="font-size: 0.7rem; color: #888; margin-top:10px;">MULTI-LAYER CIPHER CHAIN:</div>
-            <div class="chain-grid">
-                <select id="layer1" onchange="checkWarnings()">
-                    <option value="aes">L1: AES-256</option>
-                    <option value="rc4">L1: RC4</option>
-                    <option value="rabbit">L1: RABBIT</option>
-                    <option value="custom">L1: CUSTOM</option>
-                </select>
-                <select id="layer2" onchange="checkWarnings()">
-                    <option value="none">L2: NONE</option>
-                    <option value="aes">L2: AES-256</option>
-                    <option value="rc4">L2: RC4</option>
-                    <option value="rabbit">L2: RABBIT</option>
-                    <option value="custom">L2: CUSTOM</option>
-                </select>
-                <select id="layer3" onchange="checkWarnings()">
-                    <option value="none">L3: NONE</option>
-                    <option value="aes">L3: AES-256</option>
-                    <option value="rc4">L3: RC4</option>
-                    <option value="rabbit">L3: RABBIT</option>
-                    <option value="custom">L3: CUSTOM</option>
-                </select>
-            </div>
-
-            <input type="number" id="customShift" class="hidden" placeholder="[CUSTOM ROT SHIFT: 1-25]" min="1" max="25">
-
-            <div id="warn-box" class="hidden"></div>
-
-            <textarea id="itx" placeholder="[INPUT_DATA]" onfocus="curF='itx'"></textarea>
-            <input type="password" id="kix" placeholder="[MASTER_PASSPHRASE]" onfocus="curF='kix'">
-            
-            <div class="btn-group">
-                <button onclick="executeEngine('enc')">LOCK (ENCRYPT)</button>
-                <button onclick="executeEngine('dec')">UNLOCK (DECRYPT)</button>
-            </div>
-
-            <textarea id="otx" placeholder="[OUTPUT_BLOB]" readonly></textarea>
-            
-            <div class="btn-group">
-                <button onclick="copyOut()" style="background:var(--accent); color:var(--bg);">COPY_VAULT</button>
-                <button onclick="stealthMode()">CHAMELEON_TAB</button>
-            </div>
+            <input type="number" id="customShift" class="hidden" placeholder="ROT#" min="1" max="25">
         </div>
+
+        <textarea id="itx" placeholder="[INPUT_DATA]" onfocus="curF='itx'"></textarea>
+        <input type="password" id="kix" placeholder="[PASSPHRASE]" onfocus="curF='kix'">
+        
+        <div class="btn-group">
+            <button onclick="execute('enc')">ENCRYPT_DATA</button>
+            <button onclick="execute('dec')">DECRYPT_DATA</button>
+        </div>
+
+        <textarea id="otx" placeholder="[OUTPUT_BLOB]" readonly></textarea>
+        
+        <div class="btn-group">
+            <button onclick="copyOut()">COPY_VAULT</button>
+            <button onclick="chameleon()">CHAMELEON_TAB</button>
+        </div>
+        
+        <button onclick="kill()" style="width:100%; margin-top:10px; background:#8b0000; color:white;">EMERGENCY_PURGE</button>
     </div>
 </div>
 
-<div id="kb-tray"><div id="v-kb"></div></div>
+<div id="kb-tray">
+    <div id="v-kb"></div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
     let curF = 'itx';
-    let isLow = false;
+    let isCaps = false; 
     const itx = document.getElementById('itx');
     const kix = document.getElementById('kix');
     const otx = document.getElementById('otx');
     const shiftIn = document.getElementById('customShift');
-    const warnBox = document.getElementById('warn-box');
 
-    // Haptics tuned for Android hardware responses
     function hap(ms) { if (navigator.vibrate) navigator.vibrate(ms); }
     function setTheme(v) { document.body.className = 'theme-' + v; hap(20); }
-    function stealthMode() { document.getElementById('tab-title').innerText = "System Check"; hap([30,50,30]); }
+    
+    function chameleon() {
+        document.getElementById('tab-title').innerText = "Google Search";
+        alert("CHAMELEON: TAB MASKED AS GOOGLE");
+        hap([30,50,30]);
+    }
 
-    // DYNAMIC WARNING SYSTEM
-    function checkWarnings() {
-        const l1 = document.getElementById('layer1').value;
-        const l2 = document.getElementById('layer2').value;
-        const l3 = document.getElementById('layer3').value;
-        
-        let warnings = [];
-        
-        if (l1 === 'custom' || l2 === 'custom' || l3 === 'custom') {
+    function checkCustom() {
+        const type = document.getElementById('layer1').value;
+        if(type === 'custom') {
             shiftIn.classList.remove('hidden');
-            warnings.push("[!] CRITICAL: You have engaged a CUSTOM cipher layer. You MUST remember your exact ROT Shift Number and Passphrase. If forgotten, this data is mathematically unrecoverable.");
         } else {
             shiftIn.classList.add('hidden');
         }
-
-        let layerCount = (l1 !== 'none' ? 1 : 0) + (l2 !== 'none' ? 1 : 0) + (l3 !== 'none' ? 1 : 0);
-        if (layerCount > 1) {
-            warnings.push(`[i] MULTI-CHAIN ACTIVE: Data will be passed through ${layerCount} consecutive encryption layers. Ensure you decrypt in the exact same layer configuration.`);
-        }
-
-        if (warnings.length > 0) {
-            warnBox.innerHTML = warnings.join("<br><br>");
-            warnBox.classList.remove('hidden');
-        } else {
-            warnBox.classList.add('hidden');
-        }
     }
 
+    // STABLE KEYBOARD LOGIC
     function renderKB() {
         const kb = document.getElementById('v-kb');
         kb.innerHTML = '';
-        const set = isLow ? "qwertyuiopasdfghjklzxcvbnm1234567890!@#$%^&*()".split("") : "QWERTYUIOPASDFGHJKLZXCVBNM1234567890!@#$%^&*()".split("");
-        const frag = document.createDocumentFragment();
         
-        set.forEach(k => {
-            let d = document.createElement('div'); d.className = 'key'; d.innerText = k;
-            d.onclick = () => { document.getElementById(curF).value += k; hap(15); };
+        const letters = "qwertyuiopasdfghjklzxcvbnm".split("");
+        const numbers = "1234567890!@#$%^&*()".split("");
+        
+        const frag = document.createDocumentFragment();
+
+        // Letters
+        letters.forEach(l => {
+            let keyChar = isCaps ? l.toUpperCase() : l;
+            let d = document.createElement('div');
+            d.className = 'key'; d.innerText = keyChar;
+            d.onclick = () => { document.getElementById(curF).value += keyChar; hap(10); };
             frag.appendChild(d);
         });
-        
-        let sh = document.createElement('div'); sh.className='key wide'; sh.innerText=isLow?"UPPER":"lower";
-        sh.onclick=()=>{isLow=!isLow; hap(25); renderKB();}; frag.appendChild(sh);
-        
-        let bk = document.createElement('div'); bk.className='key wide'; bk.innerText="BACK";
-        bk.onclick=()=>{let f=document.getElementById(curF); f.value=f.value.slice(0,-1); hap([10,30,10]);}; 
-        frag.appendChild(bk); kb.appendChild(frag);
+
+        // Numbers & Symbols
+        numbers.forEach(n => {
+            let d = document.createElement('div');
+            d.className = 'key'; d.innerText = n;
+            d.onclick = () => { document.getElementById(curF).value += n; hap(10); };
+            frag.appendChild(d);
+        });
+
+        // SHIFT (Caps Toggle)
+        let shift = document.createElement('div');
+        shift.className = isCaps ? 'key wide active-caps' : 'key wide';
+        shift.innerText = isCaps ? "LOWER" : "UPPER";
+        shift.onclick = () => { isCaps = !isCaps; renderKB(); hap(25); };
+        frag.appendChild(shift);
+
+        // BACKSPACE
+        let bk = document.createElement('div');
+        bk.className = 'key wide'; bk.innerText = "BACK";
+        bk.onclick = () => { 
+            let f = document.getElementById(curF);
+            f.value = f.value.slice(0, -1);
+            hap(15);
+        };
+        frag.appendChild(bk);
+
+        kb.appendChild(frag);
     }
 
-    // CUSTOM ROT ALGORITHM
+    // SECURE ENGINE
     function customRot(str, amount) {
         if (amount < 0) amount = 26 + amount;
         return str.replace(/[a-zA-Z]/g, function(c) {
@@ -175,74 +200,58 @@
         });
     }
 
-    // LAYER PROCESSOR
-    function applyLayer(data, key, mode, action) {
-        if (mode === 'none') return data;
-        
-        if (action === 'enc') {
-            if(mode === 'aes') return CryptoJS.AES.encrypt(data, key).toString();
-            if(mode === 'rc4') return CryptoJS.RC4.encrypt(data, key).toString();
-            if(mode === 'rabbit') return CryptoJS.Rabbit.encrypt(data, key).toString();
-            if(mode === 'custom') {
-                let shift = parseInt(shiftIn.value) || 13;
-                return CryptoJS.AES.encrypt(customRot(data, shift), key).toString();
-            }
-        } else {
-            if(mode === 'aes') return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
-            if(mode === 'rc4') return CryptoJS.RC4.decrypt(data, key).toString(CryptoJS.enc.Utf8);
-            if(mode === 'rabbit') return CryptoJS.Rabbit.decrypt(data, key).toString(CryptoJS.enc.Utf8);
-            if(mode === 'custom') {
-                let shift = parseInt(shiftIn.value) || 13;
-                let raw = CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
-                return customRot(raw, -shift);
-            }
-        }
-    }
-
-    // CORE STABILITY ENGINE
-    function executeEngine(action) {
+    function execute(mode) {
         const key = kix.value;
         let data = itx.value;
-        const l1 = document.getElementById('layer1').value;
-        const l2 = document.getElementById('layer2').value;
-        const l3 = document.getElementById('layer3').value;
+        const type = document.getElementById('layer1').value;
+        const shift = parseInt(shiftIn.value) || 13;
 
-        if (!data || !key) {
-            hap([100,50,100]); 
-            return alert("ERR: DATA AND PASSPHRASE ARE STRICTLY REQUIRED.");
+        if (!key || !data) {
+            hap([100,50,100]);
+            return alert("ERR: INPUTS OR PASSPHRASE EMPTY");
         }
 
         try {
-            if (action === 'enc') {
-                // Forward Chain: L1 -> L2 -> L3
-                data = applyLayer(data, key, l1, 'enc');
-                data = applyLayer(data, key, l2, 'enc');
-                data = applyLayer(data, key, l3, 'enc');
-                otx.value = data; 
-                hap([50,50,50]);
+            if (mode === 'enc') {
+                if(type === 'aes') data = CryptoJS.AES.encrypt(data, key).toString();
+                if(type === 'rc4') data = CryptoJS.RC4.encrypt(data, key).toString();
+                if(type === 'custom') {
+                    // ROT Math FIRST, then AES Encrypt to utilize the user's password
+                    let rotated = customRot(data, shift);
+                    data = CryptoJS.AES.encrypt(rotated, key).toString();
+                }
+                otx.value = data;
             } else {
-                // Reverse Chain: L3 -> L2 -> L1
-                data = applyLayer(data, key, l3, 'dec');
-                if (!data && l3 !== 'none') throw new Error();
-                
-                data = applyLayer(data, key, l2, 'dec');
-                if (!data && l2 !== 'none') throw new Error();
-                
-                data = applyLayer(data, key, l1, 'dec');
-                if (!data) throw new Error();
-                
-                otx.value = data; 
-                hap([50,50,50]);
+                if(type === 'aes') data = CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
+                if(type === 'rc4') data = CryptoJS.RC4.decrypt(data, key).toString(CryptoJS.enc.Utf8);
+                if(type === 'custom') {
+                    // Decrypt AES FIRST, then reverse the ROT Math
+                    let decrypted = CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
+                    if(!decrypted) throw new Error();
+                    data = customRot(decrypted, -shift);
+                }
+                if(!data) throw new Error();
+                otx.value = data;
             }
+            hap([50,50,50]);
         } catch(e) { 
-            hap([150,50,150,50,150]); 
-            alert("FATAL_FAULT: DECRYPTION FAILED. Verify your keys, shift numbers, and exact layer order."); 
-            otx.value = "ERROR: CORRUPTED_OR_WRONG_KEY";
+            otx.value = "ERROR: DECRYPTION FAILED";
+            alert("AUTH_FAIL: WRONG KEY OR DATA CORRUPTED"); 
+            hap([150,50,150]); 
         }
     }
 
-    function copyOut() { navigator.clipboard.writeText(otx.value); hap(40); alert("VAULT_COPIED"); }
-    window.onload = () => { renderKB(); checkWarnings(); };
+    function copyOut() { 
+        if(!otx.value) return;
+        navigator.clipboard.writeText(otx.value); 
+        alert("COPIED TO CLIPBOARD"); 
+        hap(30); 
+    }
+    
+    function kill() { hap([200,100,200]); window.location.replace("about:blank"); }
+    
+    window.onload = renderKB;
+    window.onblur = () => { if(itx.value || kix.value) kill(); };
 </script>
 </body>
 </html>
