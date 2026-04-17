@@ -1,15 +1,10 @@
 # Security Policy
 
 ## Supported Versions
-Currently, only the `v1.8.x Alpha` branch is receiving active security patches and stability updates.
+Updates are currently only provided for the `v1.8.x Alpha` branch.
 
 ## Reporting a Vulnerability
-Encrypto is designed as an aggressive anti-forensic tool. If you discover a method to scrape the RAM obfuscation, bypass the multi-chain, or leak the plaintext data, **do not open a public GitHub Issue.**
+If you discover a memory leak or a way to bypass the encryption engine, please do not use the public issues tab. 
 
-Please report all critical vulnerabilities directly to:
+Email all security reports to:
 **nayanchandra789@proton.me**
-
-Include in your report:
-1. Browser and OS version.
-2. The specific Cipher Chain configuration used.
-3. Steps to reproduce the memory leak or crash.
