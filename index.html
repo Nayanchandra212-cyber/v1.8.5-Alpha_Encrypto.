@@ -6,66 +6,69 @@
 <title id="tab-title">Encrypto v1.8.5 | ALPHA</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-    :root { --bg: #0f172a; --text: #f8fafc; --accent: #38bdf8; --panel: rgba(30, 41, 59, 0.7); --font: 'Inter', sans-serif; }
-    
-    body.theme-hacker { 
-        --bg: #020a02; --text: #00ff41; --accent: #00ff41; --panel: #050f05; 
-        --font: 'JetBrains Mono', monospace; 
-    }
-    body.theme-modern { 
-        --bg: #000; --text: #fff; --accent: #ff0000; --panel: #111; 
-        --font: 'Orbitron', sans-serif; 
-    }
-    body.theme-lite { 
-        --bg: #ffffff; --text: #1a202c; --accent: #2b6cb0; --panel: #f7fafc; 
-        --font: 'Inter', sans-serif; 
+    /* BASE VARIABLES */
+    :root { 
+        --bg: #000; --text: #00ff41; --accent: #00ff41; --panel: #050f05; 
+        --font: 'JetBrains Mono', monospace; --radius: 0px; --kb-gap: 2px;
     }
 
     body { 
         background: var(--bg); color: var(--text); font-family: var(--font); 
-        margin: 0; padding: 20px; transition: all 0.3s ease; 
-        padding-bottom: 280px; user-select: none;
+        margin: 0; padding: 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+        padding-bottom: 300px; user-select: none;
     }
 
-    .container { 
-        max-width: 550px; margin: auto; border: 1px solid var(--accent); padding: 20px; 
-        background: var(--panel); backdrop-filter: blur(10px); border-radius: 8px;
+    /* THEME 1: HACKER (Terminal Look - Default) */
+    body.theme-hacker {
+        --bg: #020a02; --text: #00ff41; --accent: #00ff41; --panel: #020a02; 
+        --font: 'JetBrains Mono', monospace; --radius: 0px; --kb-gap: 2px;
     }
-    
-    .header { text-align: center; border-bottom: 1px solid var(--accent); padding-bottom: 10px; margin-bottom: 15px; }
-    h1 { font-size: 1.2rem; letter-spacing: 2px; margin: 0; }
-    .credit { font-size: 0.6rem; color: #888; font-family: 'JetBrains Mono', monospace; }
+    body.theme-hacker .container { border: 1px solid var(--accent); box-shadow: none; }
+    body.theme-hacker input, body.theme-hacker textarea { border: 1px solid #005500; background: #000; }
+    body.theme-hacker #ui-main { display: flex; flex-direction: column; } /* Standard Order */
 
-    textarea, input, select { 
-        width: 100%; background: rgba(0,0,0,0.4); border: 1px solid #444; 
-        color: var(--text); padding: 12px; margin: 6px 0; border-radius: 4px; 
-        font-family: var(--font); font-size: 0.85rem; box-sizing: border-box;
+    /* THEME 2: MODERN (Glassmorphism & Curves) */
+    body.theme-modern {
+        --bg: #0f172a; --text: #f8fafc; --accent: #38bdf8; --panel: rgba(30, 41, 59, 0.7); 
+        --font: 'Orbitron', sans-serif; --radius: 16px; --kb-gap: 8px;
     }
-    textarea:focus, input:focus { border-color: var(--accent); outline: none; }
+    body.theme-modern .container { border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(15px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    body.theme-modern input, body.theme-modern textarea { border: none; border-bottom: 2px solid var(--accent); background: rgba(0,0,0,0.4); border-radius: 8px 8px 0 0; }
+    body.theme-modern button { border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
+    body.theme-modern #ui-main { display: flex; flex-direction: column; }
+    body.theme-modern #action-btns { order: -1; margin-bottom: 15px; } /* Moves action buttons to the TOP */
 
-    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    button { 
-        background: var(--accent); color: #000; border: none; padding: 14px; 
-        cursor: pointer; font-weight: bold; font-family: var(--font); border-radius: 4px;
+    /* THEME 3: LITE (Clean App Look) */
+    body.theme-lite {
+        --bg: #f0f4f8; --text: #1a202c; --accent: #2b6cb0; --panel: #ffffff; 
+        --font: 'Inter', sans-serif; --radius: 8px; --kb-gap: 4px;
     }
-    button:hover { opacity: 0.8; }
+    body.theme-lite .container { border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1); }
+    body.theme-lite input, body.theme-lite textarea { border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; }
+    body.theme-lite button { background: var(--accent); color: #fff; box-shadow: 0 2px 4px rgba(43,108,176,0.3); }
+    body.theme-lite #ui-main { display: flex; flex-direction: column; }
+    body.theme-lite #pass-container { order: -2; } /* Moves Password to the VERY TOP */
+    body.theme-lite .header { border-bottom: 2px solid #e2e8f0; }
 
-    /* VIRTUAL KEYBOARD */
-    #kb-tray { 
-        position: fixed; bottom: 0; left: 0; width: 100%; background: #000; 
-        border-top: 2px solid var(--accent); padding: 10px 0; z-index: 9999;
-    }
-    #v-kb { 
-        display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; 
-        max-width: 600px; margin: auto; padding: 0 10px;
-    }
-    .key { 
-        background: #222; padding: 14px 0; text-align: center; cursor: pointer; 
-        font-size: 0.85rem; border-radius: 4px; color: #fff; border: 1px solid #333;
-    }
-    .key:active { background: var(--accent); color: #000; }
-    .key.wide { grid-column: span 2; background: #333; font-weight: bold; }
-    .key.active-caps { background: var(--accent); color: #000; }
+    /* SHARED STRUCTURAL CSS */
+    .container { max-width: 550px; margin: auto; padding: 25px; background: var(--panel); border-radius: var(--radius); transition: all 0.4s ease; }
+    .header { text-align: center; padding-bottom: 10px; margin-bottom: 15px; transition: all 0.4s ease; }
+    h1 { font-size: 1.3rem; letter-spacing: 1px; margin: 0; }
+    .credit { font-size: 0.6rem; color: #888; font-family: 'JetBrains Mono', monospace; margin-top: 5px; }
+
+    textarea, input, select { width: 100%; color: var(--text); padding: 14px; margin: 6px 0; font-family: var(--font); font-size: 0.9rem; box-sizing: border-box; transition: all 0.3s ease; border-radius: var(--radius); }
+    textarea:focus, input:focus { outline: none; border-color: var(--accent); filter: brightness(1.2); }
+
+    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+    button { background: var(--accent); color: var(--bg); border: none; padding: 15px; cursor: pointer; font-weight: bold; font-family: var(--font); border-radius: var(--radius); transition: all 0.2s ease; }
+    button:hover { transform: scale(0.98); opacity: 0.9; }
+
+    /* SHAPE-SHIFTING KEYBOARD */
+    #kb-tray { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--panel); border-top: 2px solid var(--accent); padding: 12px 0; z-index: 9999; transition: all 0.4s ease; }
+    #v-kb { display: grid; grid-template-columns: repeat(10, 1fr); gap: var(--kb-gap); max-width: 600px; margin: auto; padding: 0 10px; transition: gap 0.4s ease; }
+    .key { background: rgba(128,128,128,0.2); padding: 16px 0; text-align: center; cursor: pointer; font-size: 0.85rem; border-radius: var(--radius); color: var(--text); font-family: var(--font); transition: all 0.2s ease; border: 1px solid rgba(128,128,128,0.1); }
+    .key:active { background: var(--accent); color: var(--bg); transform: scale(0.95); }
+    .key.wide { grid-column: span 2; font-weight: bold; background: rgba(128,128,128,0.3); }
 
     .hidden { display: none !important; }
 </style>
@@ -76,40 +79,49 @@
     <div class="container">
         <div class="header">
             <h1>ENCRYPTO v1.8.5</h1>
-            <div class="credit">ORIGINAL CORE BY: OMKAR DAS | HARDENED BY: NAYAN</div>
+            <div class="credit">CORE: OMKAR DAS | UI/SEC: NAYAN CHANDRA</div>
         </div>
         
         <select id="themeEng" onchange="setTheme(this.value)">
-            <option value="hacker">THEME: HACKER_TERMINAL (MONO)</option>
-            <option value="modern">THEME: MODERN_GLOW (ORBITRON)</option>
-            <option value="lite">THEME: LITE_MINIMAL (INTER)</option>
+            <option value="hacker">THEME: HACKER_TERMINAL</option>
+            <option value="modern">THEME: MODERN_GLOW</option>
+            <option value="lite">THEME: LITE_MINIMAL</option>
         </select>
 
-        <div class="btn-group">
-            <select id="layer1" onchange="checkCustom()">
-                <option value="aes">CIPHER: AES-256</option>
-                <option value="rc4">CIPHER: RC4</option>
-                <option value="custom">CIPHER: CUSTOM ROT</option>
-            </select>
-            <input type="number" id="customShift" class="hidden" placeholder="ROT#" min="1" max="25">
-        </div>
+        <div id="ui-main">
+            <div id="cipher-box" class="btn-group">
+                <select id="layer1" onchange="checkCustom()">
+                    <option value="aes">CIPHER: AES-256</option>
+                    <option value="rc4">CIPHER: RC4</option>
+                    <option value="custom">CIPHER: CUSTOM ROT</option>
+                </select>
+                <input type="number" id="customShift" class="hidden" placeholder="ROT#" min="1" max="25">
+            </div>
 
-        <textarea id="itx" placeholder="[INPUT_DATA]" onfocus="curF='itx'"></textarea>
-        <input type="password" id="kix" placeholder="[PASSPHRASE]" onfocus="curF='kix'">
-        
-        <div class="btn-group">
-            <button onclick="execute('enc')">ENCRYPT_DATA</button>
-            <button onclick="execute('dec')">DECRYPT_DATA</button>
-        </div>
+            <div id="input-container">
+                <textarea id="itx" placeholder="[INPUT_MESSAGE_DATA]" onfocus="curF='itx'"></textarea>
+            </div>
 
-        <textarea id="otx" placeholder="[OUTPUT_BLOB]" readonly></textarea>
-        
-        <div class="btn-group">
-            <button onclick="copyOut()">COPY_VAULT</button>
-            <button onclick="chameleon()">CHAMELEON_TAB</button>
+            <div id="pass-container">
+                <input type="password" id="kix" placeholder="[MASTER_PASSPHRASE]" onfocus="curF='kix'">
+            </div>
+            
+            <div id="action-btns" class="btn-group">
+                <button onclick="execute('enc')">ENCRYPT_DATA</button>
+                <button onclick="execute('dec')">DECRYPT_DATA</button>
+            </div>
+
+            <div id="output-container">
+                <textarea id="otx" placeholder="[ENCRYPTED_VAULT_OUTPUT]" readonly></textarea>
+            </div>
+            
+            <div id="util-btns" class="btn-group">
+                <button onclick="copyOut()">COPY_TO_CLIPBOARD</button>
+                <button onclick="chameleon()">CHAMELEON_TAB</button>
+            </div>
+            
+            <button onclick="kill()" style="width:100%; margin-top:10px; background:#e53e3e; color:white;">EMERGENCY_PURGE</button>
         </div>
-        
-        <button onclick="kill()" style="width:100%; margin-top:10px; background:#8b0000; color:white;">EMERGENCY_PURGE</button>
     </div>
 </div>
 
@@ -120,50 +132,53 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
     let curF = 'itx';
-    let isCaps = false; 
+    let isCaps = true; 
     const itx = document.getElementById('itx');
     const kix = document.getElementById('kix');
     const otx = document.getElementById('otx');
     const shiftIn = document.getElementById('customShift');
 
+    // Haptics tuned for Android
     function hap(ms) { if (navigator.vibrate) navigator.vibrate(ms); }
-    function setTheme(v) { document.body.className = 'theme-' + v; hap(20); }
+    
+    // Theme Switcher & Renderer
+    function setTheme(v) { 
+        document.body.className = 'theme-' + v; 
+        hap(30); 
+        setTimeout(renderKB, 100); // Re-render keyboard to apply shape logic
+    }
     
     function chameleon() {
         document.getElementById('tab-title').innerText = "Google Search";
-        alert("CHAMELEON: TAB MASKED AS GOOGLE");
+        alert("CHAMELEON: TAB MASKED");
         hap([30,50,30]);
     }
 
     function checkCustom() {
-        const type = document.getElementById('layer1').value;
-        if(type === 'custom') {
+        if(document.getElementById('layer1').value === 'custom') {
             shiftIn.classList.remove('hidden');
         } else {
             shiftIn.classList.add('hidden');
         }
     }
 
-    // STABLE KEYBOARD LOGIC
+    // DYNAMIC KEYBOARD
     function renderKB() {
         const kb = document.getElementById('v-kb');
         kb.innerHTML = '';
         
-        const letters = "qwertyuiopasdfghjklzxcvbnm".split("");
+        const letters = "QWERTYUIOPASDFGHJKLZXCVBNM".split("");
         const numbers = "1234567890!@#$%^&*()".split("");
-        
         const frag = document.createDocumentFragment();
 
-        // Letters
         letters.forEach(l => {
-            let keyChar = isCaps ? l.toUpperCase() : l;
+            let keyChar = isCaps ? l : l.toLowerCase();
             let d = document.createElement('div');
             d.className = 'key'; d.innerText = keyChar;
             d.onclick = () => { document.getElementById(curF).value += keyChar; hap(10); };
             frag.appendChild(d);
         });
 
-        // Numbers & Symbols
         numbers.forEach(n => {
             let d = document.createElement('div');
             d.className = 'key'; d.innerText = n;
@@ -171,16 +186,14 @@
             frag.appendChild(d);
         });
 
-        // SHIFT (Caps Toggle)
         let shift = document.createElement('div');
-        shift.className = isCaps ? 'key wide active-caps' : 'key wide';
-        shift.innerText = isCaps ? "LOWER" : "UPPER";
+        shift.className = 'key wide';
+        shift.innerText = isCaps ? "TO_LOWER" : "TO_UPPER";
         shift.onclick = () => { isCaps = !isCaps; renderKB(); hap(25); };
         frag.appendChild(shift);
 
-        // BACKSPACE
         let bk = document.createElement('div');
-        bk.className = 'key wide'; bk.innerText = "BACK";
+        bk.className = 'key wide'; bk.innerText = "BACKSPACE";
         bk.onclick = () => { 
             let f = document.getElementById(curF);
             f.value = f.value.slice(0, -1);
@@ -191,7 +204,7 @@
         kb.appendChild(frag);
     }
 
-    // SECURE ENGINE
+    // CIPHER LOGIC
     function customRot(str, amount) {
         if (amount < 0) amount = 26 + amount;
         return str.replace(/[a-zA-Z]/g, function(c) {
@@ -206,17 +219,13 @@
         const type = document.getElementById('layer1').value;
         const shift = parseInt(shiftIn.value) || 13;
 
-        if (!key || !data) {
-            hap([100,50,100]);
-            return alert("ERR: INPUTS OR PASSPHRASE EMPTY");
-        }
+        if (!key || !data) return alert("ERR: INPUTS OR PASSPHRASE EMPTY");
 
         try {
             if (mode === 'enc') {
                 if(type === 'aes') data = CryptoJS.AES.encrypt(data, key).toString();
                 if(type === 'rc4') data = CryptoJS.RC4.encrypt(data, key).toString();
                 if(type === 'custom') {
-                    // ROT Math FIRST, then AES Encrypt to utilize the user's password
                     let rotated = customRot(data, shift);
                     data = CryptoJS.AES.encrypt(rotated, key).toString();
                 }
@@ -225,7 +234,6 @@
                 if(type === 'aes') data = CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
                 if(type === 'rc4') data = CryptoJS.RC4.decrypt(data, key).toString(CryptoJS.enc.Utf8);
                 if(type === 'custom') {
-                    // Decrypt AES FIRST, then reverse the ROT Math
                     let decrypted = CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
                     if(!decrypted) throw new Error();
                     data = customRot(decrypted, -shift);
@@ -241,13 +249,7 @@
         }
     }
 
-    function copyOut() { 
-        if(!otx.value) return;
-        navigator.clipboard.writeText(otx.value); 
-        alert("COPIED TO CLIPBOARD"); 
-        hap(30); 
-    }
-    
+    function copyOut() { navigator.clipboard.writeText(otx.value); alert("COPIED TO CLIPBOARD"); hap(30); }
     function kill() { hap([200,100,200]); window.location.replace("about:blank"); }
     
     window.onload = renderKB;
