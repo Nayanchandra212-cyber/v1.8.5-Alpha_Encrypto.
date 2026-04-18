@@ -3,93 +3,123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="tab-title">Encrypto v1.8.5 | MASTER_ALPHA</title>
+<title id="tab-title">Encrypto v1.8.6 | 9-ENGINE_CORE</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-    /* GLOBAL CSS VARIABLES */
+    /* ==========================================
+       [VDE] VISUAL DYNAMICS ENGINE (SHAPE-SHIFTER)
+       ========================================== */
     :root { 
         --bg: #121212; --text: #cccccc; --accent: #888888; --panel: #1e1e1e; 
         --font: 'Courier New', monospace; --radius: 4px; --kb-gap: 2px; --warn: #ffcc00;
     }
-
     body { 
         background: var(--bg); color: var(--text); font-family: var(--font); 
-        margin: 0; padding: 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-        padding-bottom: 300px; user-select: none; overflow-x: hidden;
+        margin: 0; padding: 15px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+        padding-bottom: 320px; user-select: none; overflow-x: hidden;
     }
 
-    /* THEME 1: HACKER (Terminal Look) */
-    body.theme-hacker {
-        --bg: #020a02; --text: #00ff41; --accent: #00ff41; --panel: #020a02; 
-        --font: 'JetBrains Mono', monospace; --radius: 0px; --kb-gap: 2px; --warn: #ff0000;
-    }
-    body.theme-hacker .container { border: 1px solid var(--accent); box-shadow: none; }
+    /* THEMES */
+    body.theme-hacker { --bg: #020a02; --text: #00ff41; --accent: #00ff41; --panel: #020a02; --font: 'JetBrains Mono', monospace; --radius: 0px; --kb-gap: 2px; --warn: #ff0000; }
+    body.theme-hacker .container, body.theme-hacker .guide-content { border: 1px solid var(--accent); box-shadow: none; }
     body.theme-hacker input, body.theme-hacker textarea, body.theme-hacker select { border: 1px solid #005500; background: #000; }
-    body.theme-hacker #ui-main { display: flex; flex-direction: column; }
+    
+    body.theme-modern { --bg: #050505; --text: #ffffff; --accent: #ff0044; --panel: rgba(20, 20, 20, 0.85); --font: 'Orbitron', sans-serif; --radius: 12px; --kb-gap: 6px; --warn: #ff3366; }
+    body.theme-modern .container, body.theme-modern .guide-content { border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(25px); box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+    body.theme-modern input, body.theme-modern textarea, body.theme-modern select { border: none; border-bottom: 2px solid var(--accent); background: rgba(0,0,0,0.6); border-radius: 8px 8px 0 0; }
+    body.theme-modern #action-btns { order: -1; margin-bottom: 15px; } 
 
-    /* THEME 2: MODERN (Glassmorphism) */
-    body.theme-modern {
-        --bg: #050505; --text: #ffffff; --accent: #ff0044; --panel: rgba(20, 20, 20, 0.8); 
-        --font: 'Orbitron', sans-serif; --radius: 12px; --kb-gap: 6px; --warn: #ff3366;
-    }
-    body.theme-modern .container { border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(20px); box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
-    body.theme-modern input, body.theme-modern textarea, body.theme-modern select { border: none; border-bottom: 2px solid var(--accent); background: rgba(0,0,0,0.5); border-radius: 8px 8px 0 0; }
-    body.theme-modern #ui-main { display: flex; flex-direction: column; }
-    body.theme-modern #action-btns { order: -1; margin-bottom: 15px; } /* Shifts Buttons Up */
-
-    /* THEME 3: LITE (Clean App Look) */
-    body.theme-lite {
-        --bg: #f8fafc; --text: #0f172a; --accent: #2563eb; --panel: #ffffff; 
-        --font: 'Inter', sans-serif; --radius: 8px; --kb-gap: 4px; --warn: #d97706;
-    }
-    body.theme-lite .container { border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+    body.theme-lite { --bg: #f8fafc; --text: #0f172a; --accent: #2563eb; --panel: #ffffff; --font: 'Inter', sans-serif; --radius: 8px; --kb-gap: 4px; --warn: #d97706; }
+    body.theme-lite .container, body.theme-lite .guide-content { border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
     body.theme-lite input, body.theme-lite textarea, body.theme-lite select { border: 1px solid #cbd5e1; background: #f1f5f9; color: #0f172a; }
     body.theme-lite button { background: var(--accent); color: #fff; box-shadow: 0 4px 6px rgba(37,99,235,0.2); }
-    body.theme-lite #ui-main { display: flex; flex-direction: column; }
-    body.theme-lite #pass-container { order: -2; } /* Shifts Password Box to Top */
+    body.theme-lite #pass-container { order: -2; } 
 
-    /* STRUCTURAL CLASSES */
-    .container { max-width: 550px; margin: auto; padding: 20px; background: var(--panel); border-radius: var(--radius); transition: all 0.4s ease; }
-    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent); padding-bottom: 10px; margin-bottom: 15px; }
-    h1 { font-size: 1.1rem; letter-spacing: 1px; margin: 0; }
+    /* UI STRUCTURE */
+    #ui-main { display: flex; flex-direction: column; gap: 8px; }
+    .container { max-width: 550px; margin: auto; padding: 25px; background: var(--panel); border-radius: var(--radius); transition: all 0.4s ease; }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent); padding-bottom: 12px; margin-bottom: 15px; }
+    .header-left h1 { font-size: 1.2rem; letter-spacing: 1px; margin: 0; text-transform: uppercase; }
+    .header-left span { font-size: 0.65rem; color: var(--accent); font-weight: bold; }
+    
+    .guide-btn { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 6px 12px; font-size: 0.75rem; border-radius: var(--radius); }
+    .guide-btn:hover { background: var(--accent); color: var(--bg); }
 
-    textarea, input, select { width: 100%; color: var(--text); padding: 12px; margin: 6px 0; font-family: var(--font); font-size: 0.85rem; box-sizing: border-box; transition: all 0.3s ease; border-radius: var(--radius); background: rgba(0,0,0,0.3); border: 1px solid #444; }
-    textarea:focus, input:focus { outline: none; border-color: var(--accent); }
+    textarea, input, select { width: 100%; color: var(--text); padding: 14px; font-family: var(--font); font-size: 0.85rem; box-sizing: border-box; transition: all 0.3s ease; border-radius: var(--radius); background: rgba(0,0,0,0.3); border: 1px solid #444; }
+    .active-field { border-color: var(--accent) !important; filter: brightness(1.2); box-shadow: inset 0 0 10px rgba(255,255,255,0.05); }
 
-    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
-    button { background: var(--accent); color: var(--bg); border: none; padding: 14px; cursor: pointer; font-weight: bold; font-family: var(--font); border-radius: var(--radius); transition: 0.2s; }
+    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 5px 0; }
+    button { background: var(--accent); color: var(--bg); border: none; padding: 15px; cursor: pointer; font-weight: bold; font-family: var(--font); border-radius: var(--radius); transition: 0.2s; text-transform: uppercase; }
     button:hover { transform: scale(0.98); filter: brightness(1.2); }
 
-    .chain-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; }
-    .chain-grid select { font-size: 0.65rem; padding: 8px 2px; text-align: center; }
+    .chain-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+    .chain-grid select { font-size: 0.65rem; padding: 10px 2px; text-align: center; text-transform: uppercase; cursor: pointer; }
+    #warn-box { border: 1px dashed var(--warn); color: var(--warn); padding: 12px; font-size: 0.75rem; background: rgba(0,0,0,0.4); text-align: justify; line-height: 1.5; text-transform: uppercase; border-radius: var(--radius); }
 
-    #warn-box { border: 1px dashed var(--warn); color: var(--warn); padding: 10px; margin: 8px 0; font-size: 0.7rem; background: rgba(0,0,0,0.4); text-align: justify; line-height: 1.4; }
+    /* ==========================================
+       [SOP] & MODALS (GUIDE / DEFCON)
+       ========================================== */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+    
+    .guide-content { background: var(--panel); width: 90%; max-width: 500px; padding: 25px; border-radius: var(--radius); color: var(--text); font-family: var(--font); max-height: 80vh; overflow-y: auto; text-transform: uppercase; font-size: 0.8rem; line-height: 1.6; }
+    .guide-content h2 { color: var(--accent); border-bottom: 1px solid var(--accent); padding-bottom: 10px; margin-top: 0; }
+    .guide-content ul { padding-left: 20px; }
+    .guide-content li { margin-bottom: 10px; }
 
-    /* FLOATING HAPTIC KEYBOARD */
-    #kb-tray { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--panel); border-top: 2px solid var(--accent); padding: 10px 0; z-index: 9999; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
-    #v-kb { display: grid; grid-template-columns: repeat(10, 1fr); gap: var(--kb-gap); max-width: 600px; margin: auto; padding: 0 8px; transition: gap 0.4s ease; }
-    .key { background: rgba(128,128,128,0.15); padding: 14px 0; text-align: center; cursor: pointer; font-size: 0.8rem; border-radius: var(--radius); color: var(--text); font-family: var(--font); border: 1px solid rgba(128,128,128,0.1); }
+    #defcon-overlay { background: rgba(139, 0, 0, 0.95); flex-direction: column; text-align: center; font-family: 'JetBrains Mono', monospace; z-index: 10005; }
+    .defcon-title { font-size: 1.5rem; letter-spacing: 2px; color: #ff4444; font-weight: bold; margin-bottom: 20px; }
+    .defcon-count { font-size: 5rem; font-weight: bold; animation: blink 1s infinite; margin: 20px 0; }
+    .defcon-sub { font-size: 0.8rem; opacity: 0.8; max-width: 80%; line-height: 1.5; }
+    @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+    .healing { color: var(--warn) !important; animation: blink 1s linear infinite; }
+
+    /* HIE KBE */
+    #kb-tray { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--panel); border-top: 2px solid var(--accent); padding: 12px 0; z-index: 9990; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
+    #v-kb { display: grid; grid-template-columns: repeat(10, 1fr); gap: var(--kb-gap); max-width: 600px; margin: auto; padding: 0 10px; transition: gap 0.4s ease; }
+    .key { background: rgba(128,128,128,0.15); padding: 16px 0; text-align: center; cursor: pointer; font-size: 0.85rem; border-radius: var(--radius); color: var(--text); font-family: var(--font); border: 1px solid rgba(128,128,128,0.1); }
     .key:active { background: var(--accent); color: var(--bg); transform: scale(0.95); }
-    .key.wide { grid-column: span 2; font-weight: bold; }
+    .key.wide { grid-column: span 2; font-weight: bold; background: rgba(128,128,128,0.25); }
     .hidden { display: none !important; }
 </style>
 </head>
 <body oncontextmenu="return false;" class="theme-hacker">
 
+<div id="defcon-overlay" class="modal-overlay hidden">
+    <div class="defcon-title">SYSTEM FOCUS LOST</div>
+    <div class="defcon-sub">SUSPECTED OVERLAY DETECTED. TAP ANYWHERE TO RECOVER.</div>
+    <div class="defcon-count" id="defcon-timer">5</div>
+    <div class="defcon-sub">EMERGENCY DATA PURGE INITIATING...</div>
+</div>
+
+<div id="guide-modal" class="modal-overlay hidden">
+    <div class="guide-content">
+        <h2>9-ENGINE FRAMEWORK</h2>
+        <p>This is a 100% Local, Zero-Trust Encryption Vault.</p>
+        <ul>
+            <li><b style="color:var(--accent)">MULTI-CHAIN (CME):</b> Route your data through up to 3 layers of AES-256, 3DES, RC4, Rabbit, or Custom ROT math.</li>
+            <li><b style="color:var(--accent)">DEFCON SHIELD (SOP):</b> If you switch apps, the screen locks and initiates a 5-second self-destruct timer.</li>
+            <li><b style="color:var(--accent)">AUTO-HEAL (EEA):</b> Automatically repairs corrupted data upon decryption.</li>
+        </ul>
+        <button onclick="VDE.toggleGuide()" style="width:100%; margin-top:10px;">ACKNOWLEDGE & CLOSE</button>
+    </div>
+</div>
+
 <div id="boot-gate">
     <div class="container">
         <div class="header">
-            <h1>ENCRYPTO v1.8.5</h1>
-            <span style="font-size:0.6rem; color:var(--accent);">MASTER_ALPHA</span>
+            <div class="header-left">
+                <h1>ENCRYPTO v1.8.6</h1>
+                <span>9-ENGINE_FRAMEWORK</span>
+            </div>
+            <button class="guide-btn" onclick="VDE.toggleGuide()">[ ? ] INFO</button>
         </div>
         
         <div id="ui-main">
             <div class="btn-group">
-                <select id="themeEng" onchange="setTheme(this.value)">
+                <select id="themeEng" onchange="VDE.setTheme(this.value)">
                     <option value="hacker">UI: HACKER_TERM</option>
                     <option value="modern">UI: MODERN_GLOW</option>
                     <option value="lite">UI: LITE_FAST</option>
-                    <option value="system">UI: SYSTEM_DEF</option>
                 </select>
                 <select id="wrapperMode">
                     <option value="raw">MODE: RAW_BLOB</option>
@@ -98,25 +128,14 @@
             </div>
 
             <div class="chain-grid">
-                <select id="layer1" onchange="checkSystem()">
-                    <option value="aes">L1: AES-256</option>
-                    <option value="rc4">L1: RC4</option>
-                    <option value="rabbit">L1: RABBIT</option>
-                    <option value="custom">L1: CUSTOM</option>
+                <select id="layer1" onchange="VDE.checkSystemWarnings()">
+                    <option value="aes">L1: AES-256</option><option value="3des">L1: 3DES</option><option value="rc4">L1: RC4</option><option value="rc4drop">L1: RC4-DROP</option><option value="rabbit">L1: RABBIT</option><option value="custom">L1: CUSTOM</option>
                 </select>
-                <select id="layer2" onchange="checkSystem()">
-                    <option value="none">L2: NONE</option>
-                    <option value="aes">L2: AES-256</option>
-                    <option value="rc4">L2: RC4</option>
-                    <option value="rabbit">L2: RABBIT</option>
-                    <option value="custom">L2: CUSTOM</option>
+                <select id="layer2" onchange="VDE.checkSystemWarnings()">
+                    <option value="none">L2: NONE</option><option value="aes">L2: AES-256</option><option value="3des">L2: 3DES</option><option value="rc4">L2: RC4</option><option value="rc4drop">L2: RC4-DROP</option><option value="rabbit">L2: RABBIT</option><option value="custom">L2: CUSTOM</option>
                 </select>
-                <select id="layer3" onchange="checkSystem()">
-                    <option value="none">L3: NONE</option>
-                    <option value="aes">L3: AES-256</option>
-                    <option value="rc4">L3: RC4</option>
-                    <option value="rabbit">L3: RABBIT</option>
-                    <option value="custom">L3: CUSTOM</option>
+                <select id="layer3" onchange="VDE.checkSystemWarnings()">
+                    <option value="none">L3: NONE</option><option value="aes">L3: AES-256</option><option value="3des">L3: 3DES</option><option value="rc4">L3: RC4</option><option value="rc4drop">L3: RC4-DROP</option><option value="rabbit">L3: RABBIT</option><option value="custom">L3: CUSTOM</option>
                 </select>
             </div>
 
@@ -124,27 +143,26 @@
             <div id="warn-box" class="hidden"></div>
 
             <div id="input-container">
-                <textarea id="itx" placeholder="[INPUT_DATA]" onfocus="curF='itx'"></textarea>
+                <textarea id="itx" placeholder="[INPUT_DATA]" onclick="HIE.setActive('itx')" readonly></textarea>
             </div>
             <div id="pass-container">
-                <input type="password" id="kix" placeholder="[MASTER_PASSPHRASE]" onfocus="curF='kix'">
+                <input type="password" id="kix" placeholder="[MASTER_PASSPHRASE]" onclick="HIE.setActive('kix')" readonly>
             </div>
             
             <div id="action-btns" class="btn-group">
-                <button onclick="execute('enc')">LOCK (ENCRYPT)</button>
-                <button onclick="execute('dec')">UNLOCK (DECRYPT)</button>
+                <button onclick="EPA.initiate('enc')">LOCK (ENCRYPT)</button>
+                <button onclick="EPA.initiate('dec')">UNLOCK (DECRYPT)</button>
             </div>
 
             <div id="output-container">
-                <textarea id="otx" placeholder="[VAULT_OUTPUT]" readonly></textarea>
+                <textarea id="otx" placeholder="[VAULT_OUTPUT]" onclick="HIE.setActive('otx')" readonly></textarea>
             </div>
             
             <div id="util-btns" class="btn-group">
-                <button onclick="copyOut()" style="background:var(--text); color:var(--bg);">COPY_DATA</button>
-                <button onclick="chameleon()">CHAMELEON_TAB</button>
+                <button onclick="EPA.copyVault()" style="background:var(--text); color:var(--bg);">COPY_DATA</button>
+                <button onclick="SOP.chameleonMode()">CHAMELEON_TAB</button>
             </div>
-            
-            <button onclick="kill()" style="width:100%; margin-top:5px; background:#8b0000; color:white;">EMERGENCY_PURGE</button>
+            <button onclick="EPA.killSwitch()" style="width:100%; background:#8b0000; color:white;">EMERGENCY_PURGE</button>
         </div>
     </div>
 </div>
@@ -153,192 +171,168 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
-    let curF = 'itx';
-    let isCaps = true; 
-    const itx = document.getElementById('itx');
-    const kix = document.getElementById('kix');
-    const otx = document.getElementById('otx');
-    const shiftIn = document.getElementById('customShift');
-    const warnBox = document.getElementById('warn-box');
+    /* =========================================================================
+       THE 9-ENGINE FRAMEWORK (v1.8.6 Alpha) 
+       ========================================================================= */
 
-    // HAPTICS & THEMES
-    function hap(ms) { if (navigator.vibrate) navigator.vibrate(ms); }
-    
-    function setTheme(v) { 
-        document.body.className = v === 'system' ? '' : 'theme-' + v; 
-        hap(30); 
-        setTimeout(renderKB, 100); 
-    }
-    
-    function chameleon() {
-        document.getElementById('tab-title').innerText = "Google Search";
-        alert("CHAMELEON: TAB MASKED");
-        hap([30,50,30]);
-    }
+    // 1. ICE (Isolated Containment Engine)
+    const ICE = { sanitize: (raw) => raw ? raw.replace(/<[^>]*>?/gm, '').trim() : "" };
 
-    // DYNAMIC WARNING LOGIC
-    function checkSystem() {
-        const l1 = document.getElementById('layer1').value;
-        const l2 = document.getElementById('layer2').value;
-        const l3 = document.getElementById('layer3').value;
-        let warnings = [];
-        
-        if (l1 === 'custom' || l2 === 'custom' || l3 === 'custom') {
-            shiftIn.classList.remove('hidden');
-            warnings.push("[!] CRITICAL: You have engaged a CUSTOM cipher layer. You MUST remember your exact ROT Shift Number. If forgotten, data is mathematically unrecoverable.");
-        } else {
-            shiftIn.classList.add('hidden');
+    // 2. HIE (Haptic Input Engine)
+    const HIE = {
+        curF: 'itx', isCaps: true,
+        vibrate: (ms) => { if (navigator.vibrate) navigator.vibrate(ms); },
+        setActive: (id) => {
+            HIE.curF = id;
+            document.querySelectorAll('textarea, input').forEach(el => el.classList.remove('active-field'));
+            document.getElementById(id).classList.add('active-field');
+            HIE.vibrate(10);
+        },
+        renderKB: () => {
+            const kb = document.getElementById('v-kb'); kb.innerHTML = '';
+            const frag = document.createDocumentFragment();
+            "QWERTYUIOPASDFGHJKLZXCVBNM".split("").forEach(l => {
+                let keyChar = HIE.isCaps ? l : l.toLowerCase();
+                let d = document.createElement('div'); d.className = 'key'; d.innerText = keyChar;
+                d.onclick = () => { if(HIE.curF !== 'otx') { document.getElementById(HIE.curF).value += keyChar; HIE.vibrate(10); } }; frag.appendChild(d);
+            });
+            "1234567890!@#$%^&*()".split("").forEach(n => {
+                let d = document.createElement('div'); d.className = 'key'; d.innerText = n;
+                d.onclick = () => { if(HIE.curF !== 'otx') { document.getElementById(HIE.curF).value += n; HIE.vibrate(10); } }; frag.appendChild(d);
+            });
+
+            let shiftBtn = document.createElement('div'); shiftBtn.className = 'key wide'; shiftBtn.innerText = HIE.isCaps ? "LOWER" : "UPPER";
+            shiftBtn.onclick = () => { HIE.isCaps = !HIE.isCaps; HIE.renderKB(); HIE.vibrate(25); }; frag.appendChild(shiftBtn);
+
+            let pasteBtn = document.createElement('div'); pasteBtn.className = 'key wide'; pasteBtn.innerText = "PASTE";
+            pasteBtn.onclick = async () => { if(HIE.curF !== 'otx') { try { document.getElementById(HIE.curF).value += await navigator.clipboard.readText(); HIE.vibrate(20); } catch (err) { alert("PASTE_ERR"); } } }; frag.appendChild(pasteBtn);
+
+            let bk = document.createElement('div'); bk.className = 'key wide'; bk.innerText = "BACKSPACE";
+            bk.onclick = () => { if(HIE.curF !== 'otx') { let f = document.getElementById(HIE.curF); f.value = f.value.slice(0, -1); HIE.vibrate(15); } }; frag.appendChild(bk);
+            kb.appendChild(frag);
         }
+    };
 
-        let layerCount = (l1 !== 'none' ? 1 : 0) + (l2 !== 'none' ? 1 : 0) + (l3 !== 'none' ? 1 : 0);
-        if (layerCount > 1) {
-            warnings.push(`[i] MULTI-CHAIN ACTIVE: Data will pass through ${layerCount} layers. Ensure you decrypt in the exact same layer configuration.`);
+    // 3. VDE (Visual Dynamics Engine)
+    const VDE = {
+        setTheme: (v) => { document.body.className = 'theme-' + v; HIE.vibrate(30); setTimeout(HIE.renderKB, 100); },
+        toggleGuide: () => {
+            const modal = document.getElementById('guide-modal');
+            if(modal.classList.contains('hidden')) { modal.classList.remove('hidden'); HIE.vibrate([10, 20]); } 
+            else { modal.classList.add('hidden'); HIE.vibrate(10); }
+        },
+        checkSystemWarnings: () => {
+            const shiftIn = document.getElementById('customShift'); const warnBox = document.getElementById('warn-box');
+            const l1 = document.getElementById('layer1').value; const l2 = document.getElementById('layer2').value; const l3 = document.getElementById('layer3').value;
+            let warnings = [];
+            if ([l1, l2, l3].includes('custom')) { shiftIn.classList.remove('hidden'); warnings.push("[!] CRITICAL: CUSTOM cipher engaged. Remember your ROT Shift."); } else { shiftIn.classList.add('hidden'); }
+            let layerCount = [l1, l2, l3].filter(l => l !== 'none').length;
+            if (layerCount > 1) warnings.push(`[i] MULTI-CHAIN ACTIVE: ${layerCount} layers. Ensure exact decryption order.`);
+            if (warnings.length > 0) { warnBox.innerHTML = warnings.join("<br><br>"); warnBox.classList.remove('hidden'); } else { warnBox.classList.add('hidden'); }
         }
+    };
 
-        if (warnings.length > 0) {
-            warnBox.innerHTML = warnings.join("<br><br>"); warnBox.classList.remove('hidden');
-        } else {
-            warnBox.classList.add('hidden');
-        }
-    }
-
-    // VIRTUAL KEYBOARD ENGINE
-    function renderKB() {
-        const kb = document.getElementById('v-kb');
-        kb.innerHTML = '';
-        const letters = "QWERTYUIOPASDFGHJKLZXCVBNM".split("");
-        const numbers = "1234567890!@#$%^&*()".split("");
-        const frag = document.createDocumentFragment();
-
-        letters.forEach(l => {
-            let keyChar = isCaps ? l : l.toLowerCase();
-            let d = document.createElement('div'); d.className = 'key'; d.innerText = keyChar;
-            d.onclick = () => { document.getElementById(curF).value += keyChar; hap(10); }; frag.appendChild(d);
-        });
-
-        numbers.forEach(n => {
-            let d = document.createElement('div'); d.className = 'key'; d.innerText = n;
-            d.onclick = () => { document.getElementById(curF).value += n; hap(10); }; frag.appendChild(d);
-        });
-
-        let shiftBtn = document.createElement('div'); shiftBtn.className = 'key wide'; shiftBtn.innerText = isCaps ? "TO_LOWER" : "TO_UPPER";
-        shiftBtn.onclick = () => { isCaps = !isCaps; renderKB(); hap(25); }; frag.appendChild(shiftBtn);
-
-        let bk = document.createElement('div'); bk.className = 'key wide'; bk.innerText = "BACKSPACE";
-        bk.onclick = () => { let f = document.getElementById(curF); f.value = f.value.slice(0, -1); hap(15); }; frag.appendChild(bk);
-
-        kb.appendChild(frag);
-    }
-
-    // MATH & CRYPTOGRAPHY ENGINES
-    function customRot(str, amount) {
-        if (amount < 0) amount = 26 + amount;
-        return str.replace(/[a-zA-Z]/g, function(c) {
-            let base = c <= 'Z' ? 65 : 97;
-            return String.fromCharCode(((c.charCodeAt(0) - base + amount) % 26) + base);
-        });
-    }
-
-    function scramble(str) {
-        // Atbash Memory Scrambler
-        return str.replace(/[a-zA-Z]/g, c => String.fromCharCode((c <= 'Z' ? 90 : 122) - (c.charCodeAt(0) - (c <= 'Z' ? 65 : 97))));
-    }
-
-    // 10-n REVERSE SALT ENGINE
-    function applySalt(text) {
-        const rLen = Math.floor(Math.random() * 9) + 1;
-        const prefix = CryptoJS.lib.WordArray.random(rLen).toString();
-        const suffix = CryptoJS.lib.WordArray.random(rLen).toString();
-        const hiddenKey = (10 - rLen).toString(); 
-        return hiddenKey + prefix + text + suffix;
-    }
-
-    function stripSalt(text) {
-        const hiddenKey = parseInt(text.substring(0,1));
-        const rLen = 10 - hiddenKey;
-        const hexLen = rLen * 2; // WordArray converts to Hex (2 chars per byte)
-        return text.substring(1 + hexLen, text.length - hexLen);
-    }
-
-    function processLayer(data, key, mode, action) {
-        if (mode === 'none') return data;
-        
-        if (action === 'enc') {
-            if(mode === 'aes') return CryptoJS.AES.encrypt(data, key).toString();
-            if(mode === 'rc4') return CryptoJS.RC4.encrypt(data, key).toString();
-            if(mode === 'rabbit') return CryptoJS.Rabbit.encrypt(data, key).toString();
-            if(mode === 'custom') {
-                let shift = parseInt(shiftIn.value) || 13;
-                return CryptoJS.AES.encrypt(customRot(data, shift), key).toString();
-            }
-        } else {
-            if(mode === 'aes') return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
-            if(mode === 'rc4') return CryptoJS.RC4.decrypt(data, key).toString(CryptoJS.enc.Utf8);
-            if(mode === 'rabbit') return CryptoJS.Rabbit.decrypt(data, key).toString(CryptoJS.enc.Utf8);
-            if(mode === 'custom') {
-                let shift = parseInt(shiftIn.value) || 13;
-                let raw = CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
-                return customRot(raw, -shift);
-            }
-        }
-    }
-
-    // THE MASTER EXECUTION LOGIC
-    function execute(action) {
-        const key = kix.value;
-        let data = itx.value;
-        const l1 = document.getElementById('layer1').value;
-        const l2 = document.getElementById('layer2').value;
-        const l3 = document.getElementById('layer3').value;
-        const wrapper = document.getElementById('wrapperMode').value;
-
-        if (!data || !key) { hap([100,50,100]); return alert("ERR: DATA AND PASSPHRASE REQUIRED."); }
-
-        try {
+    // 4. CME (Cryptographic Mutation Engine)
+    const CME = {
+        customRot: (str, amt) => { if (amt < 0) amt = 26 + amt; return str.replace(/[a-zA-Z]/g, c => String.fromCharCode(((c.charCodeAt(0) - (c <= 'Z' ? 65 : 97) + amt) % 26) + (c <= 'Z' ? 65 : 97))); },
+        scramble: (str) => str.replace(/[a-zA-Z]/g, c => String.fromCharCode((c <= 'Z' ? 90 : 122) - (c.charCodeAt(0) - (c <= 'Z' ? 65 : 97)))),
+        applySalt: (text) => { const rLen = Math.floor(Math.random() * 9) + 1; return (10 - rLen) + CryptoJS.lib.WordArray.random(rLen) + text + CryptoJS.lib.WordArray.random(rLen); },
+        stripSalt: (text) => text.substring(1 + (10 - parseInt(text[0])) * 2, text.length - (10 - parseInt(text[0])) * 2),
+        processLayer: (data, key, mode, action) => {
+            if (mode === 'none') return data;
+            let shift = parseInt(document.getElementById('customShift').value) || 13;
             if (action === 'enc') {
-                // 1. Math Salt -> 2. Atbash Scramble -> 3. L1 -> 4. L2 -> 5. L3
-                data = applySalt(data);
-                data = scramble(data);
-                data = processLayer(data, key, l1, 'enc');
-                data = processLayer(data, key, l2, 'enc');
-                data = processLayer(data, key, l3, 'enc');
-                
-                // 6. Steganography Wrapper
-                if(wrapper === 'ghost') {
-                    data = "Log entry registered at system time. Output signature is " + btoa(data).substring(0,8) + " payload verified: " + data;
-                }
-                
-                otx.value = data; hap([50,50,50]);
+                const map = { aes: CryptoJS.AES, '3des': CryptoJS.TripleDES, rc4: CryptoJS.RC4, rc4drop: CryptoJS.RC4Drop, rabbit: CryptoJS.Rabbit };
+                return mode === 'custom' ? CryptoJS.AES.encrypt(CME.customRot(data, shift), key).toString() : map[mode].encrypt(data, key).toString();
             } else {
-                // 1. Strip Steganography
-                if(wrapper === 'ghost') {
-                    if(!data.includes("payload verified: ")) throw new Error();
-                    data = data.split("payload verified: ")[1];
-                }
-                
-                // 2. Reverse L3 -> 3. Reverse L2 -> 4. Reverse L1
-                data = processLayer(data, key, l3, 'dec'); if (!data && l3 !== 'none') throw new Error();
-                data = processLayer(data, key, l2, 'dec'); if (!data && l2 !== 'none') throw new Error();
-                data = processLayer(data, key, l1, 'dec'); if (!data) throw new Error();
-                
-                // 5. Reverse Atbash Scramble -> 6. Strip Math Salt
-                data = scramble(data); 
-                data = stripSalt(data);
-                
-                otx.value = data; hap([50,50,50]);
+                const map = { aes: CryptoJS.AES, '3des': CryptoJS.TripleDES, rc4: CryptoJS.RC4, rc4drop: CryptoJS.RC4Drop, rabbit: CryptoJS.Rabbit };
+                return mode === 'custom' ? CME.customRot(CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8), -shift) : map[mode].decrypt(data, key).toString(CryptoJS.enc.Utf8);
             }
-        } catch(e) { 
-            hap([150,50,150,50,150]); 
-            otx.value = "FATAL_ERROR: CORRUPTED_DATA_OR_WRONG_KEY";
-            alert("FATAL_FAULT: DECRYPTION FAILED. Verify your keys, shift numbers, and layer order."); 
         }
-    }
+    };
 
-    function copyOut() { navigator.clipboard.writeText(otx.value); hap(40); alert("VAULT_COPIED"); }
-    function kill() { hap([200,100,200]); window.location.replace("about:blank"); }
-    
-    window.onload = () => { renderKB(); checkSystem(); };
-    window.onblur = () => { if(itx.value || kix.value) kill(); };
+    // 5. ACE (Asynchronous Compute Engine)
+    const ACE = {
+        computeData: async (data, key, action) => new Promise((res, rej) => setTimeout(() => { 
+            try {
+                const l1 = document.getElementById('layer1').value; const l2 = document.getElementById('layer2').value; const l3 = document.getElementById('layer3').value;
+                const wrap = document.getElementById('wrapperMode').value;
+                let proc = data;
+                if (action === 'enc') {
+                    proc = CME.processLayer(CME.processLayer(CME.processLayer(CME.scramble(CME.applySalt(proc)), key, l1, 'enc'), key, l2, 'enc'), key, l3, 'enc');
+                    if(wrap === 'ghost') proc = `Log entry registered. Sig ${proc.substring(0,8)} payload verified: ${proc}`;
+                    res(proc);
+                } else {
+                    if(wrap === 'ghost') proc = proc.split("payload verified: ")[1];
+                    proc = CME.processLayer(CME.processLayer(CME.processLayer(proc, key, l3, 'dec'), key, l2, 'dec'), key, l1, 'dec');
+                    if (!proc) throw new Error();
+                    res(CME.stripSalt(CME.scramble(proc)));
+                }
+            } catch(e) { rej(e); }
+        }, 10))
+    };
+
+    // 6. EEA (Evasion & Enchantment Architecture)
+    const EEA = {
+        autoHeal: async (corrupt, key) => {
+            HIE.vibrate([50,50,50,50,50]); document.getElementById('otx').classList.add('healing'); document.getElementById('otx').value = "[!] GLITCH DETECTED. EEA RECOVERY RUNNING...";
+            await new Promise(r => setTimeout(r, 800));
+            let fixes = [ () => corrupt.replace(/\s+/g, ''), () => { let d = corrupt.replace(/\s+/g, ''); while(d.length%4) d+='='; return d; }, () => corrupt.split("payload verified: ")[1] ];
+            for (let i = 0; i < fixes.length; i++) {
+                try { let test = await ACE.computeData(fixes[i](), key, 'dec'); if(test) { HIE.vibrate([100,50,100]); document.getElementById('otx').classList.remove('healing'); return `[+] RECOVERED:\n\n${test}`; } } catch(e){}
+            }
+            HIE.vibrate([200,100,200,100,200]); document.getElementById('otx').classList.remove('healing'); return "[-] EEA RECOVERY FAILED. BAD KEY.";
+        }
+    };
+
+    // 7. EPA (Execution & Protection Architecture)
+    const EPA = {
+        initiate: async (action) => {
+            let key = document.getElementById('kix').value; let data = ICE.sanitize(document.getElementById('itx').value); const otx = document.getElementById('otx');
+            if (!data || !key) return alert("EPA_ERR: MISSING DATA");
+            try { otx.value = "ACE PROCESSING..."; otx.value = await ACE.computeData(data, key, action); HIE.vibrate([50,50,50]); }
+            catch(e) { otx.value = action === 'dec' ? await EEA.autoHeal(data, key) : "FATAL_ERROR"; if(action !== 'dec') HIE.vibrate([150,50,150]); }
+            finally { key = data = null; }
+        },
+        copyVault: () => { navigator.clipboard.writeText(document.getElementById('otx').value); HIE.vibrate(40); alert("VAULT_COPIED"); },
+        killSwitch: () => { HIE.vibrate([200,100,200]); window.location.replace("about:blank"); }
+    };
+
+    // 8. SOP (Stealth Override Protocol)
+    const SOP = {
+        tmr: null, int: null,
+        chameleonMode: () => { document.getElementById('tab-title').innerText = "Google"; alert("CHAMELEON_ACTIVE"); HIE.vibrate([30,50,30]); },
+        triggerDefcon: () => {
+            if((document.getElementById('itx').value || document.getElementById('kix').value) && document.getElementById('guide-modal').classList.contains('hidden')) {
+                HIE.vibrate([200,100,200]); const over = document.getElementById('defcon-overlay'); const cnt = document.getElementById('defcon-timer');
+                over.classList.remove('hidden'); let t = 5; cnt.innerText = t;
+                SOP.int = setInterval(() => { t--; cnt.innerText = t; HIE.vibrate(50); }, 1000); SOP.tmr = setTimeout(() => { clearInterval(SOP.int); EPA.killSwitch(); }, 5000);
+            }
+        },
+        cancelDefcon: () => { const over = document.getElementById('defcon-overlay'); if (!over.classList.contains('hidden')) { clearTimeout(SOP.tmr); clearInterval(SOP.int); over.classList.add('hidden'); HIE.vibrate([50,50]); } },
+        deployTrap: () => { setInterval(() => { Function("debugger")(); }, 100); }
+    };
+
+    // 9. OME (Orchestration & Maintenance Engine) - Global Kernel
+    const OME = {
+        bootSystem: () => {
+            HIE.setActive('itx');
+            HIE.renderKB();
+            VDE.checkSystemWarnings();
+            SOP.deployTrap();
+            
+            // Centralized Event Listeners
+            window.onblur = SOP.triggerDefcon;
+            window.onfocus = SOP.cancelDefcon;
+            document.getElementById('defcon-overlay').onclick = SOP.cancelDefcon;
+            
+            console.log("OME: 9-Engine Framework Boot Sequence Complete.");
+        }
+    };
+
+    // INITIATE KERNEL
+    window.onload = OME.bootSystem;
+
 </script>
 </body>
 </html>
